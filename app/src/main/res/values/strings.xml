@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Camerlot</string>
+    <string name="mode">mode</string>
 </resources>
