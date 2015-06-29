@@ -1,25 +1,25 @@
 package premiumapp.org.camerlot;
 
+
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.RectF;
 import android.hardware.Camera;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import java.io.IOException;
 
-
-public class CameraActivity extends AppCompatActivity {
+public class CameraFragment extends Fragment {
 
     private SurfaceView mSurfaceView;
     private SurfaceHolder mHolder;
@@ -29,31 +29,52 @@ public class CameraActivity extends AppCompatActivity {
 
     final static int CAMERA_ID = 0;
 
+    public CameraFragment() {
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        int param = WindowManager.LayoutParams.FLAG_FULLSCREEN;
-        getWindow().setFlags(param, param);
+        View root = inflater.inflate(R.layout.fragment_camera, container, false);
 
-        super.onCreate(savedInstanceState);
-
-        setContentView(R.layout.activity_camera);
-
-        mSurfaceView = (SurfaceView) findViewById(R.id.surfaceView);
+        mSurfaceView = (SurfaceView) root.findViewById(R.id.surface_view_in_fragment);
 
         mHolder = mSurfaceView.getHolder();
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
         mHolderCallback = new HolderCallback();
         mHolder.addCallback(mHolderCallback);
+
+        return root;
+    }
+
+    public static Camera getCameraInstance(Context ctx) {
+
+        Camera camera = null;
+        try {
+            camera = Camera.open();
+        }
+        catch (Exception e){
+            Toast.makeText(ctx, "Camera in use or doesn't exists", Toast.LENGTH_LONG).show();
+        }
+        return camera;
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
-        mCamera = getCameraInstance(this);
+        if (!getUserVisibleHint()) {
+            return;
+        }
+
+        try {
+            mCamera = getCameraInstance(getActivity());
+        }
+        catch (Exception e){
+            Toast.makeText(getActivity(), "Camera in use or doesn't exists", Toast.LENGTH_LONG).show();
+        }
 
         if (mCamera != null) {
             definePreview();
@@ -61,7 +82,19 @@ public class CameraActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    public void setUserVisibleHint(boolean visible)
+    {
+        super.setUserVisibleHint(visible);
+        if (visible && isResumed())
+        {
+            //Only manually call onResume if fragment is already visible
+            //Otherwise allow natural fragment lifecycle to call onResume
+            onResume();
+        }
+    }
+
+    @Override
+    public void onPause() {
         super.onPause();
 
         if (mCamera != null) {
@@ -75,11 +108,11 @@ public class CameraActivity extends AppCompatActivity {
 
         Point displaySize = new Point();
 
-        getWindowManager().getDefaultDisplay().getSize(displaySize);
+        getActivity().getWindowManager().getDefaultDisplay().getSize(displaySize);
 
         boolean landscapeMode = displaySize.x > displaySize.y;
 
-        Size cameraSize = mCamera.getParameters().getPreviewSize();
+        Camera.Size cameraSize = mCamera.getParameters().getPreviewSize();
 
         RectF rDisplay = new RectF();
         RectF rCamera = new RectF();
@@ -105,7 +138,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private void defineOrientation(int cameraId) {
 
-        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        int rotation = getActivity().getWindowManager().getDefaultDisplay().getRotation();
         int rotDegree = 0;
 
         switch (rotation) {
@@ -141,17 +174,6 @@ public class CameraActivity extends AppCompatActivity {
         mCamera.setDisplayOrientation(calcDegree);
     }
 
-    public static Camera getCameraInstance(Context ctx){
-        Camera camera = null;
-        try {
-            camera = Camera.open();
-        }
-        catch (Exception e){
-            Toast.makeText(ctx, "Camera in use or doesn't exists", Toast.LENGTH_LONG).show();
-        }
-        return camera;
-    }
-
     private class HolderCallback implements SurfaceHolder.Callback {
 
         @Override
@@ -162,7 +184,7 @@ public class CameraActivity extends AppCompatActivity {
                 mCamera.setPreviewDisplay(holder);
                 mCamera.startPreview();
 
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 Log.d(getClass().getName(), "Error setting camera preview: " + e.getMessage());
             }
 
@@ -181,7 +203,7 @@ public class CameraActivity extends AppCompatActivity {
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
 
-            } catch (IOException e) {
+            } catch (IOException | NullPointerException e) {
                 Log.d(getClass().getName(), "Error starting camera preview: " + e.getMessage());
             }
         }
@@ -192,30 +214,3 @@ public class CameraActivity extends AppCompatActivity {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
