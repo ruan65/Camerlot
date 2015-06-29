@@ -1,0 +1,18 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/car_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#66ccff"
+    tools:context=".MainActivity">
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_camera_request"
+        android:onClick="startPreview"
+        android:src="@drawable/ic_camera_black_48dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
