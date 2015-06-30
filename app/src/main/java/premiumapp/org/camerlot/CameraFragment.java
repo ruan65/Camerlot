@@ -23,7 +23,6 @@ public class CameraFragment extends Fragment {
 
     private SurfaceView mSurfaceView;
     private SurfaceHolder mHolder;
-    private HolderCallback mHolderCallback;
 
     private Camera mCamera;
 
@@ -43,8 +42,9 @@ public class CameraFragment extends Fragment {
         mHolder = mSurfaceView.getHolder();
         mHolder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        mHolderCallback = new HolderCallback();
-        mHolder.addCallback(mHolderCallback);
+        HolderCallback holderCallback = new HolderCallback();
+
+        mHolder.addCallback(holderCallback);
 
         return root;
     }
@@ -147,11 +147,11 @@ public class CameraFragment extends Fragment {
 
         if (info.facing == Camera.CameraInfo.CAMERA_FACING_BACK) {
 
-            calcDegree = ((360 - rotDegree) + info.orientation);
+            calcDegree = (360 - rotDegree + info.orientation);
 
         } else if (info.facing == Camera.CameraInfo.CAMERA_FACING_FRONT) {
 
-            calcDegree = ((360 - rotDegree) - info.orientation);
+            calcDegree = (360 - rotDegree - info.orientation);
             calcDegree += 360;
         }
 
