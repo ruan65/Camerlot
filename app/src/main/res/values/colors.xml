@@ -4,6 +4,8 @@
     <color name="primary">#03A9F4</color>
     <color name="primary_dark">#0288D1</color>
     <color name="background">#80D8FF</color>
+    <color name="colorAccent">#e91e63</color>
+    <color name="rippleColor">#F8BBD0</color>
 
 
 </resources>

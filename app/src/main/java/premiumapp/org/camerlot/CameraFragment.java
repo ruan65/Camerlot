@@ -1,6 +1,5 @@
 package premiumapp.org.camerlot;
 
-
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -19,6 +18,7 @@ import android.widget.Toast;
 
 import java.io.IOException;
 
+@SuppressWarnings("deprecation")
 public class CameraFragment extends Fragment {
 
     private SurfaceView mSurfaceView;
@@ -27,7 +27,7 @@ public class CameraFragment extends Fragment {
 
     private Camera mCamera;
 
-    final static int CAMERA_ID = 0;
+    private int mCameraId;
 
     public CameraFragment() {
     }
@@ -49,13 +49,12 @@ public class CameraFragment extends Fragment {
         return root;
     }
 
-    public static Camera getCameraInstance(Context ctx) {
+    public static Camera getCameraInstance(Context ctx, int camIndex) {
 
         Camera camera = null;
         try {
-            camera = Camera.open();
-        }
-        catch (Exception e){
+            camera = Camera.open(camIndex);
+        } catch (Exception e) {
             Toast.makeText(ctx, "Camera in use or doesn't exists", Toast.LENGTH_LONG).show();
         }
         return camera;
@@ -70,26 +69,13 @@ public class CameraFragment extends Fragment {
         }
 
         try {
-            mCamera = getCameraInstance(getActivity());
-        }
-        catch (Exception e){
+            mCamera = getCameraInstance(getActivity(), mCameraId);
+        } catch (Exception e) {
             Toast.makeText(getActivity(), "Camera in use or doesn't exists", Toast.LENGTH_LONG).show();
         }
 
         if (mCamera != null) {
             definePreview();
-        }
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean visible)
-    {
-        super.setUserVisibleHint(visible);
-        if (visible && isResumed())
-        {
-            //Only manually call onResume if fragment is already visible
-            //Otherwise allow natural fragment lifecycle to call onResume
-            onResume();
         }
     }
 
@@ -174,6 +160,10 @@ public class CameraFragment extends Fragment {
         mCamera.setDisplayOrientation(calcDegree);
     }
 
+    public void setmCameraId(int mCameraId) {
+        this.mCameraId = mCameraId;
+    }
+
     private class HolderCallback implements SurfaceHolder.Callback {
 
         @Override
@@ -187,7 +177,6 @@ public class CameraFragment extends Fragment {
             } catch (IOException | NullPointerException e) {
                 Log.d(getClass().getName(), "Error setting camera preview: " + e.getMessage());
             }
-
         }
 
         @Override
@@ -198,7 +187,7 @@ public class CameraFragment extends Fragment {
             try {
                 mCamera.stopPreview();
 
-                defineOrientation(CAMERA_ID);
+                defineOrientation(mCameraId);
 
                 mCamera.setPreviewDisplay(mHolder);
                 mCamera.startPreview();
