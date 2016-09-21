@@ -1,0 +1,21 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/front_camera"
+        android:icon="@drawable/ic_camera_front_white_36dp"
+        android:orderInCategory="50"
+        android:title="Camera"
+        android:visible="false"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/back_camera"
+        android:icon="@drawable/ic_camera_rear_white_36dp"
+        android:orderInCategory="50"
+        android:title="Camera"
+        android:visible="false"
+        app:showAsAction="always" />
+</menu>

@@ -1,0 +1,23 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context="premiumapp.org.camerlot.ControlFragment">
+
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_camera_request"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/floating_button_margin_bottom"
+        android:layout_marginRight="@dimen/floating_button_margin_right"
+        android:src="@drawable/ic_camera_rear_white_36dp"
+        app:elevation="@dimen/floating_button_elevation"
+        app:rippleColor="@color/rippleColor"
+        app:backgroundTint="@color/colorAccent" />
+
+</RelativeLayout>

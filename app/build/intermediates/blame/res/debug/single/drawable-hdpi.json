@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/home/a/develop/howto/camera1/Camerlot/app/build/intermediates/res/merged/debug/drawable-hdpi/ic_camera_rear_white_36dp.png",
+        "source": "/home/a/develop/howto/camera1/Camerlot/app/src/main/res/drawable-hdpi/ic_camera_rear_white_36dp.png"
+    },
+    {
+        "merged": "/home/a/develop/howto/camera1/Camerlot/app/build/intermediates/res/merged/debug/drawable-hdpi/ic_camera_front_white_36dp.png",
+        "source": "/home/a/develop/howto/camera1/Camerlot/app/src/main/res/drawable-hdpi/ic_camera_front_white_36dp.png"
+    },
+    {
+        "merged": "/home/a/develop/howto/camera1/Camerlot/app/build/intermediates/res/merged/debug/drawable-hdpi/ic_camera_black_48dp.png",
+        "source": "/home/a/develop/howto/camera1/Camerlot/app/src/main/res/drawable-hdpi/ic_camera_black_48dp.png"
+    }
+]
